@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'local_notification/view/local_notification.dart';
+import 'firebase_messaging/view/firebase_messaging.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,10 +12,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Home',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: Colors.deepPurple.shade700,
@@ -25,10 +23,7 @@ class HomePage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.grey.shade50,
-              Colors.grey.shade100,
-            ],
+            colors: [Colors.grey.shade50, Colors.grey.shade100],
           ),
         ),
         child: Padding(
@@ -51,27 +46,33 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               _buildButton(
                 context,
-                label: 'Firebase',
+                label: 'Firebase Messaging',
                 onTap: () {
-                  
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FirebaseMessagingView(),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 20),
               _buildButton(
                 context,
-                label: 'Awesome',
+                label: 'Awesome Notifications',
                 onTap: () {
-                 
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FirebaseMessagingView(),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 20),
-              _buildButton(
-                context,
-                label: 'OneSignal',
-                onTap: () {
-                  
-                },
-              ),
+              _buildButton(context, label: 'Awesome', onTap: () {}),
+              const SizedBox(height: 20),
+              _buildButton(context, label: 'OneSignal', onTap: () {}),
             ],
           ),
         ),
@@ -89,13 +90,10 @@ class HomePage extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.deepPurple.shade400,
-          width: 2,
-        ),
+        border: Border.all(color: Colors.deepPurple.shade400, width: 2),
         boxShadow: [
           BoxShadow(
-            color: Colors.deepPurple.withValues(alpha:0.1),
+            color: Colors.deepPurple.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -103,13 +101,10 @@ class HomePage extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white.withValues(alpha:0.9),
+          backgroundColor: Colors.white.withValues(alpha: 0.9),
           foregroundColor: Colors.deepPurple.shade700,
           padding: const EdgeInsets.symmetric(vertical: 18),
-          textStyle: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

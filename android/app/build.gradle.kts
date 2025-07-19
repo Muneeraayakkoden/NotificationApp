@@ -1,9 +1,12 @@
 plugins {
     id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    // END: FlutterFire Configuration
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id("dev.flutter.flutter-gradle-plugin")
-}
+    id("dev.flutter.flutter-gradle-plugin")}
 
 android {
     namespace = "com.example.new_app"
@@ -57,4 +60,6 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
     implementation("androidx.window:window:1.0.0")
     implementation("androidx.window:window-java:1.0.0")
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4")) // Firebase BOM
+    implementation("com.google.firebase:firebase-messaging-ktx") // FCM with Kotlin support
 }

@@ -1,3 +1,16 @@
+// Top of the file
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.1.4") // Android Gradle Plugin
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22") // Kotlin
+        classpath("com.google.gms:google-services:4.4.1") //firebase
+    }
+}
+
 allprojects {
     repositories {
         google()

@@ -1,0 +1,39 @@
+(1)Awesome Notification
+  (a) podfile configuration:
+
+        //
+        post_install do |installer|
+            installer.pods_project.targets.each do |target|
+            flutter_additional_ios_build_settings target
+            end
+        
+            ################  Awesome Notifications pod modification 1 ###################
+            awesome_pod_file = File.expand_path(File.join('plugins', 'awesome_notifications', 'ios', 'Scripts', 'AwesomePodFile'), '.symlinks')
+            require awesome_pod_file
+            update_awesome_pod_build_settings(installer)
+            ################  Awesome Notifications pod modification 1 ###################
+        end
+        
+        ################  Awesome Notifications pod modification 2 ###################
+        awesome_pod_file = File.expand_path(File.join('plugins', 'awesome_notifications', 'ios', 'Scripts', 'AwesomePodFile'), '.symlinks')
+        require awesome_pod_file
+        update_awesome_main_target_settings('Runner', File.dirname(File.realpath(__FILE__)), flutter_root)
+        ################  Awesome Notifications pod modification 2 ###################
+        //
+
+
+
+
+
+(2)firebase_messaging
+    (a)Enable app capabilities in Xcode:
+        - Open your Xcode project workspace (ios/Runner.xcworkspace).
+        - Enable push notifications.
+        - Enable the Background fetch and the Remote notifications background execution modes.
+    (b)Upload your APNs authentication key:
+        - Before you use FCM, upload your APNs certificate to Firebase. If you don't already have an APNs certificate, create one in the Apple Developer Member Center.
+        - Inside your project in the Firebase console, select the gear icon, select Project Settings, and then select the Cloud Messaging tab.
+        - Select the Upload Certificate button for your development certificate, your production certificate, or both. At least one is required.
+        - For each certificate, select the .p12 file, and provide the password, if any. Make sure the bundle ID for this certificate matches the bundle ID of your app. Select Save.
+    (c)Method swizzling
+        - To use the FCM Flutter plugin on Apple devices, you must not disable method swizzling. Swizzling is required, and without it, key Firebase features such as FCM token handling do not function properly.
