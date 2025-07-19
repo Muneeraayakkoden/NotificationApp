@@ -20,8 +20,7 @@ class AwesomeProvider with ChangeNotifier {
     await _notificationService.showBigPictureNotification(
       title: 'Big Picture Notification',
       body: 'This is a big picture notification',
-      bigPicture:
-          'https://images.unsplash.com/photo-1506744038136-46273834b3fb', // Valid Unsplash image
+      bigPicture:'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
     );
   }
 

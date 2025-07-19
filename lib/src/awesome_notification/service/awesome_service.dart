@@ -94,11 +94,6 @@ class AwesomeService {
         AwesomeNotifications().requestPermissionToSendNotifications();
       }
     });
-
-    // Listen to notification actions
-    // AwesomeNotifications().actionStream.listen((receivedNotification) {
-    //   Handle notification actions
-    // });
   }
 
   // Basic Notification
@@ -161,7 +156,7 @@ class AwesomeService {
         channelKey: 'big_text_channel',
         notificationLayout: NotificationLayout.BigText,
         title: title,
-        body: bigText, // Use the long text here
+        body: bigText, 
       ),
     );
   }
@@ -280,7 +275,7 @@ class AwesomeService {
     required String body,
     required int progress,
     required bool indeterminate,
-    required int id, // Added id parameter
+    required int id,
   }) async {
     await AwesomeNotifications().createNotification(
       content: NotificationContent(

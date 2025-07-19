@@ -8,17 +8,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'dart:developer';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
-
 /// Main entry point of the application
 Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
-    
+
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     log('Firebase initialized successfully');
-
 
     runApp(const MyApp());
   } catch (e, stack) {
@@ -27,8 +25,7 @@ Future<void> main() async {
     runApp(const MyApp());
   }
   AwesomeNotifications().initialize(
-    // set the icon to null if you want to use the default app icon
-    'resource://drawable/res_app_icon',
+    null, // Use default app icon
     [
       NotificationChannel(
         channelGroupKey: 'basic_channel_group',
