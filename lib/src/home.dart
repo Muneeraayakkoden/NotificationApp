@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'local_notification/view/local_notification.dart';
-import 'firebase_messaging/view/firebase_messaging.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -35,12 +33,7 @@ class HomePage extends StatelessWidget {
                 context,
                 label: 'Local Notification',
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LocalNotification(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, '/localnotification');
                 },
               ),
               const SizedBox(height: 20),
@@ -48,31 +41,25 @@ class HomePage extends StatelessWidget {
                 context,
                 label: 'Firebase Messaging',
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FirebaseMessagingView(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, '/firebaseMsg');
                 },
               ),
               const SizedBox(height: 20),
               _buildButton(
                 context,
-                label: 'Awesome Notifications',
+                label: 'Awesome',
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FirebaseMessagingView(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, '/awesome');
                 },
               ),
               const SizedBox(height: 20),
-              _buildButton(context, label: 'Awesome', onTap: () {}),
-              const SizedBox(height: 20),
-              _buildButton(context, label: 'OneSignal', onTap: () {}),
+              _buildButton(
+                context,
+                label: 'OneSignal',
+                onTap: () {
+                  Navigator.pushNamed(context, '/onesignal');
+                },
+              ),
             ],
           ),
         ),

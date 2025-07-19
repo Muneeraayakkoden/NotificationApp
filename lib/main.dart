@@ -3,54 +3,51 @@ import 'routes/app_routes.dart';
 import 'routes/route_names.dart';
 import 'package:provider/provider.dart';
 import 'provider/getprovider.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'firebase_options.dart' show DefaultFirebaseOptions;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:developer';
+import 'package:awesome_notifications/awesome_notifications.dart';
+
 
 /// Main entry point of the application
 Future<void> main() async {
   try {
-    await dotenv.load();
-    // Ensure Flutter bindings are initialized
     WidgetsFlutterBinding.ensureInitialized();
-
-    log('Initializing Firebase...');
+    
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     log('Firebase initialized successfully');
 
-    // Initialize OneSignal
-    await _initializeOneSignal();
 
-    log('Starting application...');
     runApp(const MyApp());
   } catch (e, stack) {
     log('Error during app initialization: $e', stackTrace: stack);
     // Still run the app even if initialization fails
     runApp(const MyApp());
   }
-}
-
-/// Initialize OneSignal
-Future<void> _initializeOneSignal() async {
-  try {
-    // Enable verbose logging for debugging (remove in production)
-    OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-    final String appId = dotenv.env['ONESIGNAL_APP_ID']!;
-    // Initialize OneSignal
-    OneSignal.initialize(appId);
-    log('OneSignal initialized successfully');
-
-    // Request notification permission
-    OneSignal.Notifications.requestPermission(false);
-    log('Notification permission requested');
-  } catch (e, stack) {
-    log('Error initializing OneSignal: $e', stackTrace: stack);
-    // Don't rethrow as OneSignal is optional
-  }
+  AwesomeNotifications().initialize(
+    // set the icon to null if you want to use the default app icon
+    'resource://drawable/res_app_icon',
+    [
+      NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: Color(0xFF9D50DD),
+        ledColor: Colors.white,
+      ),
+    ],
+    // Channel groups are only visual and are not required
+    channelGroups: [
+      NotificationChannelGroup(
+        channelGroupKey: 'basic_channel_group',
+        channelGroupName: 'Basic group',
+      ),
+    ],
+    debug: true,
+  );
 }
 
 /// Main application widget
