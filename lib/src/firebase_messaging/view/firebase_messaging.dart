@@ -9,50 +9,19 @@ class FirebaseMessagingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<FirebaseProvider>(
       builder: (context, provider, _) {
-        if (!provider.isInitialized && !provider.isLoading) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            provider.init();
-          });
-        }
-        if (provider.isLoading || !provider.isInitialized) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (provider.error != null) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.error, color: Colors.red, size: 48),
-                const SizedBox(height: 16),
-                Text(
-                  'Push Notification Error:',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  provider.error!,
-                  style: const TextStyle(color: Colors.red),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () async {
-                    await provider.requestPermission();
-                  },
-                  child: const Text('Try Requesting Permission Again'),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'If the issue persists, please enable notifications in your device system settings.',
-                  style: TextStyle(fontSize: 14, color: Colors.black54),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          );
-        }
         return Scaffold(
-          appBar: AppBar(title: const Text('Push Notifications')),
+          appBar: AppBar(
+            title: const Text(
+              'Push Notifications',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            backgroundColor: Colors.deepPurple.shade700,
+            elevation: 0,
+            iconTheme: const IconThemeData(color: Colors.white),
+          ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: provider.lastMessage == null
@@ -124,12 +93,14 @@ class FirebaseMessagingView extends StatelessWidget {
                                   margin: const EdgeInsets.only(top: 4),
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: Colors.deepPurple.withOpacity(0.05),
+                                    color: Colors.deepPurple.withValues(
+                                      alpha: 0.05,
+                                    ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
                                     provider.lastMessage?.data.toString() ??
-                                        '{}',
+                                        'Not Available',
                                     style: const TextStyle(
                                       fontSize: 14,
                                       color: Colors.black87,
@@ -149,7 +120,7 @@ class FirebaseMessagingView extends StatelessWidget {
                             ).cancelAllNotifications();
                           },
                           icon: const Icon(Icons.cancel),
-                          label: const Text('Cancel Notification'),
+                          label: const Text('Clear'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.redAccent,
                             foregroundColor: Colors.white,

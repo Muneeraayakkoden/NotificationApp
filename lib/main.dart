@@ -16,6 +16,7 @@ Future<void> main() async {
 
     // Initialize Firebase
     await FirebaseService.initializeFirebase();
+    await FirebaseService().init(); 
     log('Firebase initialized successfully');
 
     // Initialize Awesome Notifications

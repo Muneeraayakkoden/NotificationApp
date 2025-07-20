@@ -1,6 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
+import '../../../firebase_options.dart';
 import 'dart:developer';
-import '../constants.dart';
+import '../firebase_constants/constants.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 class FirebaseService {
@@ -25,15 +27,19 @@ class FirebaseService {
 
   void Function()? onMessageReceived;
 
+  /// Static method to initialize Firebase
+  static Future<void> initializeFirebase() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
   // Initialize FCM and set up handlers
   Future<void> init() async {
     try {
       log(FirebaseMessagingConstants.requestingPermission);
       _settings = await _messaging.requestPermission();
       log(
-        '${FirebaseMessagingConstants.permissionStatus}: ${_settings?.authorizationStatus}',
-      );
-      print(
         '${FirebaseMessagingConstants.permissionStatus}: ${_settings?.authorizationStatus}',
       );
 
@@ -44,7 +50,6 @@ class FirebaseService {
       log(FirebaseMessagingConstants.gettingToken);
       _token = await _messaging.getToken();
       log('${FirebaseMessagingConstants.token}: $_token');
-      print('${FirebaseMessagingConstants.token}: $_token');
 
       if (_token == null) {
         throw Exception(FirebaseMessagingConstants.noToken);
@@ -54,7 +59,6 @@ class FirebaseService {
       FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
         _token = newToken;
         log('${FirebaseMessagingConstants.tokenRefreshed}: $_token');
-        print('${FirebaseMessagingConstants.tokenRefreshed}: $_token');
       });
 
       // Foreground message handler
@@ -90,7 +94,6 @@ class FirebaseService {
         '${FirebaseMessagingConstants.errorInitializing}: ${e.toString()}',
         stackTrace: stack,
       );
-      print('${FirebaseMessagingConstants.errorInitializing}: ${e.toString()}');
       rethrow;
     }
   }
@@ -100,10 +103,8 @@ class FirebaseService {
     try {
       await _messaging.subscribeToTopic(topic);
       log(FirebaseMessagingConstants.subscribedToTopic);
-      print('${FirebaseMessagingConstants.subscribedToTopic}: $topic');
     } catch (e) {
       log('${FirebaseMessagingConstants.errorSubscribing}: ${e.toString()}');
-      print('${FirebaseMessagingConstants.errorSubscribing}: ${e.toString()}');
     }
   }
 
@@ -112,12 +113,8 @@ class FirebaseService {
     try {
       await _messaging.unsubscribeFromTopic(topic);
       log(FirebaseMessagingConstants.unsubscribedFromTopic);
-      print('${FirebaseMessagingConstants.unsubscribedFromTopic}: $topic');
     } catch (e) {
       log('${FirebaseMessagingConstants.errorUnsubscribing}: ${e.toString()}');
-      print(
-        '${FirebaseMessagingConstants.errorUnsubscribing}: ${e.toString()}',
-      );
     }
   }
 
@@ -125,9 +122,6 @@ class FirebaseService {
   Future<NotificationSettings> requestPermission() async {
     _settings = await _messaging.requestPermission();
     log(
-      '${FirebaseMessagingConstants.permissionRequested}: ${_settings?.authorizationStatus}',
-    );
-    print(
       '${FirebaseMessagingConstants.permissionRequested}: ${_settings?.authorizationStatus}',
     );
     if (_settings?.authorizationStatus != AuthorizationStatus.authorized) {
