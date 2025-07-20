@@ -4,10 +4,6 @@ import '../service/awesome_service.dart';
 class AwesomeProvider with ChangeNotifier {
   final AwesomeService _notificationService = AwesomeService();
 
-  Future<void> initializeNotifications() async {
-    await _notificationService.initialize();
-  }
-
   // Methods to trigger different notification types
   Future<void> showBasicNotification() async {
     await _notificationService.showBasicNotification(

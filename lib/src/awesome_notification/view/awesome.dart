@@ -1,46 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/awesome_provider.dart';
+import '../../widget/notification_button.dart';
 
-class Awesome extends StatefulWidget {
+class Awesome extends StatelessWidget {
   const Awesome({super.key});
 
   @override
-  State<Awesome> createState() => _AwesomeState();
-}
-
-class _AwesomeState extends State<Awesome> {
-  late final AwesomeProvider _provider;
-  bool _isInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _provider = Provider.of<AwesomeProvider>(context, listen: false);
-    _initializeNotifications();
-  }
-
-  Future<void> _initializeNotifications() async {
-    try {
-      await _provider.initializeNotifications();
-      setState(() {
-        _isInitialized = true;
-       
-      });
-    } catch (e) {
-      setState(() {
-        _isInitialized = true;
-        
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return _buildScaffold();
-  }
-
-  Widget _buildScaffold() {
+    final provider = Provider.of<AwesomeProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
@@ -60,40 +28,19 @@ class _AwesomeState extends State<Awesome> {
             colors: [Colors.grey.shade50, Colors.grey.shade100],
           ),
         ),
-        child: _isInitialized
-            ? SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    NotificationDemoButtons(provider: _provider),
-                  ],
-                ),
-              )
-            : const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(color: Colors.deepPurple),
-                    SizedBox(height: 16),
-                    Text(
-                      'Initializing notifications...',
-                      style: TextStyle(fontSize: 16, color: Colors.black54),
-                    ),
-                  ],
-                ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              NotificationButtons(
+                configs: getNotificationButtonConfigs(provider),
               ),
+            ],
+          ),
+        ),
       ),
     );
   }
-}
-
-class NotificationButtonConfig {
-  final String label;
-  final VoidCallback onPressed;
-  const NotificationButtonConfig({
-    required this.label,
-    required this.onPressed,
-  });
 }
 
 List<NotificationButtonConfig> getNotificationButtonConfigs(
@@ -144,66 +91,6 @@ List<NotificationButtonConfig> getNotificationButtonConfigs(
     onPressed: provider.cancelAllNotifications,
   ),
 ];
-
-class NotificationDemoButtons extends StatelessWidget {
-  final AwesomeProvider provider;
-  const NotificationDemoButtons({super.key, required this.provider});
-
-  @override
-  Widget build(BuildContext context) {
-    final configs = getNotificationButtonConfigs(provider);
-    return Column(
-      children: configs
-          .map(
-            (config) => _NotificationButton(
-              label: config.label,
-              onPressed: config.onPressed,
-            ),
-          )
-          .toList(),
-    );
-  }
-}
-
-class _NotificationButton extends StatelessWidget {
-  final String label;
-  final VoidCallback onPressed;
-  const _NotificationButton({required this.label, required this.onPressed});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.deepPurple.shade400, width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.deepPurple.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white.withValues(alpha: 0.9),
-          foregroundColor: Colors.deepPurple.shade700,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          elevation: 0,
-        ),
-        child: Text(
-          label,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-      ),
-    );
-  }
-}
 
 class _NotificationButtonLabels {
   static const basic = '🔔 Basic Notification';

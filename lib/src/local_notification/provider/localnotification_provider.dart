@@ -11,7 +11,6 @@ class NotificationProvider extends ChangeNotifier {
 
   Future<void> showBasicNotification() async {
     try {
-      debugPrint('🔄 Attempting to show basic notification...');
       const AndroidNotificationDetails androidNotificationDetails =
           AndroidNotificationDetails(
             'test_channel_id',
@@ -35,7 +34,6 @@ class NotificationProvider extends ChangeNotifier {
         android: androidNotificationDetails,
       );
       final int currentId = notificationId++;
-      debugPrint('🔔 Showing notification with ID: $currentId');
       await _service.flutterLocalNotificationsPlugin.show(
         currentId,
         'Basic Notification',
@@ -216,7 +214,6 @@ class NotificationProvider extends ChangeNotifier {
       const String groupChannelId = 'grouped_channel';
       const String groupChannelName = 'Grouped Notifications';
 
-      // Create messaging style for grouped notifications
       final List<Message> messages = [
         Message('Hello! How are you?', DateTime.now(), Person(name: 'Alice')),
         Message(

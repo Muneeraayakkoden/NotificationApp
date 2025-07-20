@@ -3,51 +3,40 @@ import 'routes/app_routes.dart';
 import 'routes/route_names.dart';
 import 'package:provider/provider.dart';
 import 'provider/getprovider.dart';
-import 'firebase_options.dart' show DefaultFirebaseOptions;
-import 'package:firebase_core/firebase_core.dart';
+import 'src/firebase_messaging/service/firebase_service.dart';
+import 'src/awesome_notification/service/awesome_service.dart';
+import 'src/local_notification/service/local_notification_service.dart';
+import 'src/onesignal/service/onesignal_service.dart';
 import 'dart:developer';
-import 'package:awesome_notifications/awesome_notifications.dart';
 
 /// Main entry point of the application
 Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
 
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    // Initialize Firebase
+    await FirebaseService.initializeFirebase();
     log('Firebase initialized successfully');
+
+    // Initialize Awesome Notifications
+    await AwesomeService().initialize();
+    log('Awesome Notifications initialized successfully');
+
+    // Initialize Flutter Local Notifications
+    await NotificationService.initializeLocalNotifications();
+    log('Flutter Local Notifications initialized successfully');
+
+    // Initialize OneSignal
+    await OneSignalService.initializeOneSignal();
+    log('OneSignal initialized successfully');
 
     runApp(const MyApp());
   } catch (e, stack) {
     log('Error during app initialization: $e', stackTrace: stack);
-    // Still run the app even if initialization fails
-    runApp(const MyApp());
+    runApp(const MyApp()); // Still run the app even if initialization fails
   }
-  AwesomeNotifications().initialize(
-    null, // Use default app icon
-    [
-      NotificationChannel(
-        channelGroupKey: 'basic_channel_group',
-        channelKey: 'basic_channel',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic tests',
-        defaultColor: Color(0xFF9D50DD),
-        ledColor: Colors.white,
-      ),
-    ],
-    // Channel groups are only visual and are not required
-    channelGroups: [
-      NotificationChannelGroup(
-        channelGroupKey: 'basic_channel_group',
-        channelGroupName: 'Basic group',
-      ),
-    ],
-    debug: true,
-  );
 }
 
-/// Main application widget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -57,7 +46,7 @@ class MyApp extends StatelessWidget {
       providers: getProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Demo App',
+        title: 'New App',
         theme: ThemeData(
           fontFamily: 'Poppins',
           primarySwatch: Colors.deepPurple,

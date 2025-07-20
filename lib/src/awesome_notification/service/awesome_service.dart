@@ -6,88 +6,28 @@ class AwesomeService {
   factory AwesomeService() => _instance;
   AwesomeService._internal();
 
+  /// Initialize Awesome Notifications 
   Future<void> initialize() async {
     await AwesomeNotifications().initialize(
       null, // Use default app icon
       [
         NotificationChannel(
+          channelGroupKey: 'basic_channel_group',
           channelKey: 'basic_channel',
           channelName: 'Basic notifications',
-          channelDescription: 'Notification channel for basic notifications',
-          defaultColor: Colors.blue,
+          channelDescription: 'Notification channel for basic tests',
+          defaultColor: Color(0xFF9D50DD),
           ledColor: Colors.white,
-          importance: NotificationImportance.High,
-          channelShowBadge: true,
-          onlyAlertOnce: true,
-          playSound: true,
-          criticalAlerts: true,
-        ),
-        NotificationChannel(
-          channelKey: 'media_channel',
-          channelName: 'Media notifications',
-          channelDescription: 'Notification channel for media notifications',
-          defaultColor: Colors.blue,
-          ledColor: Colors.white,
-          importance: NotificationImportance.High,
-          channelShowBadge: true,
-          onlyAlertOnce: true,
-          playSound: true,
-          criticalAlerts: true,
-        ),
-        NotificationChannel(
-          channelKey: 'big_text_channel',
-          channelName: 'Big text notifications',
-          channelDescription: 'Notification channel for big text notifications',
-          defaultColor: Colors.blue,
-          ledColor: Colors.white,
-          importance: NotificationImportance.High,
-          channelShowBadge: true,
-          onlyAlertOnce: true,
-          playSound: true,
-          criticalAlerts: true,
-        ),
-        NotificationChannel(
-          channelKey: 'inbox_channel',
-          channelName: 'Inbox notifications',
-          channelDescription:
-              'Notification channel for inbox style notifications',
-          defaultColor: Colors.blue,
-          ledColor: Colors.white,
-          importance: NotificationImportance.High,
-          channelShowBadge: true,
-          onlyAlertOnce: true,
-          playSound: true,
-          criticalAlerts: true,
-        ),
-        NotificationChannel(
-          channelKey: 'messaging_channel',
-          channelName: 'Messaging notifications',
-          channelDescription:
-              'Notification channel for messaging notifications',
-          defaultColor: Colors.blue,
-          ledColor: Colors.white,
-          importance: NotificationImportance.High,
-          channelShowBadge: true,
-          onlyAlertOnce: true,
-          playSound: true,
-          criticalAlerts: true,
-        ),
-        NotificationChannel(
-          channelKey: 'progress_channel',
-          channelName: 'Progress notifications',
-          channelDescription:
-              'Notification channel for progress bar notifications',
-          defaultColor: Colors.blue,
-          ledColor: Colors.white,
-          importance: NotificationImportance.High,
-          channelShowBadge: true,
-          onlyAlertOnce: true,
-          playSound: true,
-          criticalAlerts: true,
         ),
       ],
+      channelGroups: [
+        NotificationChannelGroup(
+          channelGroupKey: 'basic_channel_group',
+          channelGroupName: 'Basic group',
+        ),
+      ],
+      debug: true,
     );
-
     // Request permission for notifications
     await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
@@ -156,7 +96,7 @@ class AwesomeService {
         channelKey: 'big_text_channel',
         notificationLayout: NotificationLayout.BigText,
         title: title,
-        body: bigText, 
+        body: bigText,
       ),
     );
   }

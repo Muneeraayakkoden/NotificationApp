@@ -5,12 +5,19 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  static final NotificationService _instance = NotificationService._internal();
+  factory NotificationService() => _instance;
+  NotificationService._internal();
+
+  /// Static method for initializing local notifications
+  static Future<void> initializeLocalNotifications() async {
+    await _instance.initialize();
+  }
 
   Future<void> initialize() async {
     try {
-      debugPrint('🔄 Initializing notification service...');
       await requestPermissions();
 
       const AndroidInitializationSettings initializationSettingsAndroid =
@@ -51,7 +58,6 @@ class NotificationService {
 
   Future<void> requestPermissions() async {
     try {
-      debugPrint('🔄 Requesting notification permissions...');
 
       final bool? result = await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
