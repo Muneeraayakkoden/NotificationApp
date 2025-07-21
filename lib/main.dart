@@ -8,15 +8,15 @@ import 'src/awesome_notification/service/awesome_service.dart';
 import 'src/local_notification/service/local_notification_service.dart';
 import 'src/onesignal/service/onesignal_service.dart';
 import 'dart:developer';
+import 'src/onesignal/view/onesignal_view.dart';
 
-/// Main entry point of the application
 Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
 
     // Initialize Firebase
     await FirebaseService.initializeFirebase();
-    await FirebaseService().init(); 
+    await FirebaseService().init();
     log('Firebase initialized successfully');
 
     // Initialize Awesome Notifications
@@ -40,13 +40,14 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: getProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
         title: 'New App',
         theme: ThemeData(
           fontFamily: 'Poppins',
